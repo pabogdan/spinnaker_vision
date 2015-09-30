@@ -15,9 +15,9 @@ class Visualizer(Thread):
 
     def run(self):
         print "Running viz thread"
-        fig = plt.figure()
+        self.fig = plt.figure()
         self.im = plt.imshow(self.f(), cmap=cm.Greys_r)
-        self.ani = animation.FuncAnimation(fig, self.updatefig, interval=10, blit=False)
+        self.ani = animation.FuncAnimation(self.fig, self.updatefig, interval=10, blit=True)
         plt.show()
         while not self.halt:
             pass
