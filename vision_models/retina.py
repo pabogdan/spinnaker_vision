@@ -16,11 +16,9 @@ class Retina(nengo.Node):
                                      label=label)
 
     def asymetric_pad(self, rand_array):
-        start_point = self.focus_point - (np.asarray([rand_array.shape[0],
-                                                      rand_array.shape[
-                                                          1]]) // 2)
-        for i in range(10):
-            for j in range(10):
+        start_point = self.focus_point - np.asarray([5, 5])
+        for i in range(9):
+            for j in range(9):
                 rand_array[start_point[0] + i][start_point[1] + j] = \
                     np.random.rand() * .2 + .7
         return rand_array
@@ -28,7 +26,7 @@ class Retina(nengo.Node):
     def retina_output(self, time):
         self.image = self.asymetric_pad(np.random.rand(self.image_size[0],
                                                        self.image_size[
-                                                           1]) * 0.3 + .3)
+                                                           1]) * 0.1 + .3)
         self.image[0][0] = 0.
         return self.image.ravel()
 
