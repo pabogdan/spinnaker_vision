@@ -1,0 +1,23 @@
+bogdanp@bogdanp-HP-EliteDesk-800-G1-SFF:~/Project$ python snippets/region_splitting_mock_retina_test.py
+/usr/local/lib/python2.7/dist-packages/IPython/config.py:13: ShimWarning: The `IPython.config` package has been deprecated. You should import from traitlets.config instead.
+  "You should import from traitlets.config instead.", ShimWarning)
+/usr/local/lib/python2.7/dist-packages/IPython/nbconvert.py:13: ShimWarning: The `IPython.nbconvert` package has been deprecated. You should import from ipython_nbconvert instead.
+  "You should import from ipython_nbconvert instead.", ShimWarning)
+/usr/local/lib/python2.7/dist-packages/IPython/nbformat.py:13: ShimWarning: The `IPython.nbformat` package has been deprecated. You should import from nbformat instead.
+  "You should import from nbformat instead.", ShimWarning)
+/usr/local/lib/python2.7/dist-packages/IPython/html.py:14: ShimWarning: The `IPython.html` package has been deprecated. You should import from `notebook` instead. `IPython.html.widgets` has moved to `ipywidgets`.
+  "`IPython.html.widgets` has moved to `ipywidgets`.", ShimWarning)
+/usr/local/lib/python2.7/dist-packages/IPython/utils/traitlets.py:5: UserWarning: IPython.utils.traitlets has moved to a top-level traitlets package.
+  warn("IPython.utils.traitlets has moved to a top-level traitlets package.")
+Traceback (most recent call last):
+  File "snippets/region_splitting_mock_retina_test.py", line 1, in <module>
+    from nengo.networks import BasalGanglia
+  File "/usr/local/lib/python2.7/dist-packages/nengo-2.1.0_dev-py2.7.egg/nengo/__init__.py", line 30, in <module>
+    from .simulator import Simulator
+  File "/usr/local/lib/python2.7/dist-packages/nengo-2.1.0_dev-py2.7.egg/nengo/simulator.py", line 20, in <module>
+    from nengo.utils.progress import ProgressTracker
+  File "/usr/local/lib/python2.7/dist-packages/nengo-2.1.0_dev-py2.7.egg/nengo/utils/progress.py", line 229, in <module>
+    class IPythonProgressWidget(widgets.DOMWidget):
+  File "/usr/local/lib/python2.7/dist-packages/IPython/utils/shimmodule.py", line 92, in __getattr__
+    raise AttributeError(key)
+AttributeError: DOMWidget

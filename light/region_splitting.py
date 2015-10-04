@@ -1,50 +1,36 @@
-from nengo.networks import EnsembleArray, BasalGanglia, Thalamus
-
-__author__ = 'bogdanp'
-
 import nengo
-import nengo_spinnaker
-import nengo_pushbot
-import numpy
-
-no_rows = 3
-no_columns = 3
-image_size = 128 ** 2
-
-frequency = 100  # Hz
-
-model = nengo.Network("Splitting image into regions")
+import numpy as np
 
 
-def quick_check(x):
-    print x
+class RegionSplitter(nengo.Network):
+    def __init__(self, input_node, array_like_regions=np.zeros((3, 3)), label=None, seed=None,
+                 add_to_container=None):
+        super(RegionSplitter, self).__init__(label, seed,
+                                             add_to_container)
+        self.input_node = input_node
+        self.array_like_regions = array_like_regions
+        if type(array_like_regions) != np.ndarray:
+            self.array_like_regions = np.asarray(array_like_regions)
 
-with model:
-    bot_network = nengo_pushbot.PushBotNetwork("10.162.177.57")
-    bot_network.show_image()
-    image_input = nengo.Node(bot_network.bot.image.ravel())
-    regions = EnsembleArray(n_neurons=100, n_ensembles=no_rows * no_columns, ens_dimensions=1,
-                            radius=image_size / (no_rows * no_columns))
+        # Positions I'm looking for
 
-    for row in range(no_rows):
-        for column in range(no_columns):
-            for actual_row in range(128 / no_rows * row, 128 / no_rows * (row + 1)):
-                for actual_column in range(128 / no_rows * row, 128 / no_rows * (row + 1)):
-                    nengo.Connection(image_input[actual_row + 128 * actual_column], regions.input[row + column])
+        all_positions = np.arange(input_node.size_out).reshape(np.round(np.sqrt(input_node.size_out)), np.round(np.sqrt(input_node.size_out)))
 
-    bg = BasalGanglia(no_rows * no_columns)
+        with self:
+            self.regions = np.array(np.zeros((self.array_like_regions.shape[0], self.array_like_regions.shape[1])),
+                                    dtype=nengo.Ensemble)
 
-    nengo.Connection(regions.output, bg.input)
+            for x in range(self.regions.shape[0]):
+                for y in range(self.regions.shape[1]):
+                    self.regions[x][y] = nengo.Ensemble(
+                        n_neurons=800, dimensions=1,
+                        radius=(all_positions.shape[1] // self.regions.shape[1]) * (all_positions.shape[0] // self.regions.shape[0]))
 
-    thalamus = Thalamus(no_rows * no_columns, 100)
-
-    nengo.Connection(bg.output, thalamus.input)
-
-    output = nengo.Ensemble(600, dimensions=no_rows*no_columns)
-
-    nengo.Connection(bg.output, output, function=quick_check)
+                    for position in all_positions[(all_positions.shape[0] // self.regions.shape[0]) * x : (all_positions.shape[1] // self.regions.shape[1]) * y,
+                                                  (all_positions.shape[0] // self.regions.shape[0]) * (x + 1) : (all_positions.shape[1] // self.regions.shape[1]) * (y + 1)].ravel():
+                        nengo.Connection(self.input_node[position], self.regions[x][y])
 
 
-sim = nengo_spinnaker.Simulator(model)
-with sim:
-    sim.run(60)
+
+
+
