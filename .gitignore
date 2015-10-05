@@ -1,3 +1,7 @@
 *.pyc
 
 *.cfg
+
+*.idea
+
+*.egg-info
