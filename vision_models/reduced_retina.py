@@ -25,5 +25,4 @@ class ReducedRetina(Retina):
                 output_raveled_size))
 
         reduced_image = np.sum(image, axis=2)
-        print np.max(reduced_image)
         return reduced_image.ravel()
