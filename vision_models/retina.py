@@ -27,7 +27,6 @@ class Retina(nengo.Node):
         self.image = self.asymetric_pad(np.random.rand(self.image_size[0],
                                                        self.image_size[
                                                            1]) * 0.1 + .3)
-        self.image[0][0] = 0.
         return self.image.ravel()
 
     def set_focus(self, new_focus_point):
