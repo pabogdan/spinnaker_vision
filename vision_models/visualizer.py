@@ -27,7 +27,9 @@ class Visualizer(Thread):
         self.halt = True
 
     def f(self):
-        return self.mock_retina.image
+        i = self.mock_retina.image
+        i[0][0] = 0.
+        return i
 
     def updatefig(self, *args):
         self.im.set_array(self.f())
