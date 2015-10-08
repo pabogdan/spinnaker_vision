@@ -19,8 +19,9 @@ class Retina(nengo.Node):
         start_point = self.focus_point - np.asarray([10, 10])
         for i in range(21):
             for j in range(21):
-                rand_array[start_point[0] + i][start_point[1] + j] = \
-                    np.random.rand() * .2 + .8
+                if 0 <= start_point[0] + i < self.image_size[0] and 0 <= start_point[1] + j < self.image_size[1]:
+                    rand_array[start_point[0] + i][start_point[1] + j] = \
+                        np.random.rand() * .2 + .8
         return rand_array
 
     def retina_output(self, time):
