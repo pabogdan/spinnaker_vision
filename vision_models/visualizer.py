@@ -16,7 +16,7 @@ class Visualizer(Thread):
     def run(self):
         print "Running viz thread"
         self.fig = plt.figure()
-        self.im = plt.imshow(self.f(), cmap=cm.Greys_r)
+        self.im = plt.imshow(self.f(), vmax=1, vmin=0, cmap=cm.Greys_r)
         self.ani = animation.FuncAnimation(self.fig, self.updatefig, interval=10, blit=True)
         plt.show()
         while not self.halt:
@@ -28,7 +28,6 @@ class Visualizer(Thread):
 
     def f(self):
         i = self.mock_retina.image
-        i[0][0] = 0.
         return i
 
     def updatefig(self, *args):
