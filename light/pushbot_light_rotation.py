@@ -1,3 +1,5 @@
+from nengo.dists import Uniform, Choice
+
 __author__ = 'bogdanp'
 
 import nengo
@@ -9,6 +11,8 @@ model = nengo.Network("Efficient slicing")
 
 positions = np.arange(128 ** 2).reshape(128, 128)
 no_regions = 9
+
+turn_gain = 0.1
 
 with model:
     bot_network = nengo_pushbot.PushBotNetwork("10.162.177.57")
@@ -26,7 +30,6 @@ with model:
     image = nengo.Node(send_image)
 
     regions = []
-    max_population = nengo.Ensemble(600, 1, radius=400, label="Maximum")
 
     for x in range(3):
         for y in range(3):
@@ -41,20 +44,16 @@ with model:
             nengo.Connection(image, region, transform=np.asarray([positions.ravel()]),
                              function=lambda x: np.abs(x))
 
-            # Connection to max population
-
-            nengo.Connection(region, max_population)
-
             # Recurrent connection for temporary memory
 
-            nengo.Connection(region, region, transform=[[.2]], synapse=0.2)
+            nengo.Connection(region, region, transform=[[.2]], synapse=0.15)
 
 # Inhibitory connections
 for pop_pre in regions:
     for pop_post in regions:
         if pop_pre is not pop_post:
             with model:
-                nengo.Connection(pop_pre, pop_post.neurons, transform=[[-.5]] * pop_post.n_neurons)
+                nengo.Connection(pop_pre, pop_post.neurons, transform=[[-.6]] * pop_post.n_neurons)
 
 
 # Pooling
@@ -63,14 +62,15 @@ with model:
 
     for index in range(len(regions)):
         if index % 3 == 0:
-            nengo.Connection(regions[index], motor_control, synapse=0.1, transform=[[.01]])
+            nengo.Connection(regions[index], motor_control, synapse=0.1, transform=[[.001]])
         elif index % 3 == 2:
-            nengo.Connection(regions[index], motor_control, synapse=0.1, transform=[[-.01]])
+            nengo.Connection(regions[index], motor_control, synapse=0.1, transform=[[-.001]])
 
-    nengo.Connection(motor_control, bot_network.motor, synapse=0.1, transform=[[-1], [1]])
+    nengo.Connection(motor_control, bot_network.motor, synapse=0.1, transform=[[-1], [1]],
+                     function=lambda x: x * turn_gain)
 
 sim = nengo_spinnaker.Simulator(model)
 with sim:
     print "Sim started"
-    sim.run(10)
+    sim.run(60)
     print "Byebye"
