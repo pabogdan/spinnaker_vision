@@ -16,12 +16,12 @@ def newest_version():
         description='Spiking neural network vision system using a silicon sensor retina running on SpiNNaker',
         # Requirements
         dependency_links=['https://github.com/nengo/nengo/tarball/master#egg=nengo-2.1.0.dev0',
-                          'https://github.com/project-rig/nengo_spinnaker/tarball/master#egg=nengo-spinnaker',
+                          'https://github.com/project-rig/nengo_spinnaker/tarball/master#egg=nengo-spinnaker-0.2.5.dev0',
                           'https://github.com/nengo/nengo_gui/tarball/master',
                           'https://github.com/ctn-waterloo/nengo_pushbot/tarball/master#egg=nengo-pushbot-0.0.1.dev0'],
 
         install_requires=["nengo==2.1.0.dev0", "rig>=0.5.3, <1.0.0",
-                          "bitarray>=0.8.1, <1.0.0", "nengo-spinnaker>=0.2.5", "nengo_gui>=0.1.4",
+                          "bitarray>=0.8.1, <1.0.0", "nengo-spinnaker==0.2.5", "nengo_gui>=0.1.4",
                           "nengo-pushbot==0.0.1.dev0"],
         classifiers=[
             "Operating System :: POSIX :: Linux",
