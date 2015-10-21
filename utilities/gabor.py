@@ -57,3 +57,22 @@ def make_random_gabor(width, height):
                           gamma=np.random.uniform(0.4, 0.8),
                           x_offset=np.random.uniform(-1, 1),
                           y_offset=np.random.uniform(-1, 1))
+
+
+def make_random_gabor_at_orientation(width, height, theta):
+    """
+    Generate a Gabor filter with slightly randomised variables (except orientation).
+
+    :param width: width of the resulting filter
+    :param height: height of the resulting filter
+    :param theta: orientation of the normal to the parallel stripes of a Gabor function
+    :return:
+    """
+    return generate_gabor(width, height,
+                          lambd=np.random.uniform(0.3, 0.8),
+                          theta=theta,
+                          psi=np.random.uniform(0, 2 * np.pi),
+                          sigma=np.random.uniform(0.2, 0.5),
+                          gamma=np.random.uniform(0.4, 0.8),
+                          x_offset=np.random.uniform(-1, 1),
+                          y_offset=np.random.uniform(-1, 1))
